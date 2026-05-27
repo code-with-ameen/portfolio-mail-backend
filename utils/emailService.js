@@ -1,26 +1,16 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-const sendInquiryEmail = async ({
-    name,
-    email,
-    message
-}) => {
+const sendInquiryEmail = async ({ name, email, message }) => {
 
     // ==================================================
     // 1. MAIL TO YOU
     // ==================================================
-    await transporter.sendMail({
-        from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
+    await resend.emails.send({
+        from: 'Portfolio Contact <onboarding@resend.dev>',
         to: process.env.RECEIVER_EMAIL,
-        replyTo: email,
+        reply_to: email,
         subject: `New Inquiry From ${name}`,
 
         html: `
@@ -31,10 +21,8 @@ const sendInquiryEmail = async ({
             font-family:Arial,sans-serif;
         ">
             <h1>New Inquiry</h1>
-
             <p><strong>Name:</strong> ${name}</p>
             <p><strong>Email:</strong> ${email}</p>
-
             <div style="
                 margin-top:20px;
                 padding:20px;
@@ -49,10 +37,10 @@ const sendInquiryEmail = async ({
     });
 
     // ==================================================
-    // 2. PREMIUM REPLY MAIL TO USER
+    // 2. REPLY MAIL TO USER
     // ==================================================
-    await transporter.sendMail({
-        from: `"Ameen" <${process.env.EMAIL_USER}>`,
+    await resend.emails.send({
+        from: 'Ameen <onboarding@resend.dev>',
         to: email,
         subject: 'Your inquiry has been received — Ameen',
 
@@ -64,7 +52,6 @@ const sendInquiryEmail = async ({
             font-family:Arial,sans-serif;
             color:#ffffff;
         ">
-
         <div style="
             max-width:700px;
             margin:40px auto;
@@ -73,10 +60,7 @@ const sendInquiryEmail = async ({
             border-radius:32px;
             overflow:hidden;
         ">
-
-            <div style="
-                padding:60px 50px;
-            ">
+            <div style="padding:60px 50px;">
 
                 <div style="
                     font-size:14px;
@@ -94,42 +78,22 @@ const sendInquiryEmail = async ({
                     margin:0 0 24px;
                     font-weight:700;
                 ">
-                    Let’s build something
-                    <span style="
-                        color:#38bdf8;
-                    ">
-                        meaningful.
-                    </span>
+                    Let's build something
+                    <span style="color:#38bdf8;">meaningful.</span>
                 </h1>
 
-                <p style="
-                    color:#bdbdbd;
-                    font-size:18px;
-                    line-height:1.8;
-                    margin-bottom:24px;
-                ">
+                <p style="color:#bdbdbd; font-size:18px; line-height:1.8; margin-bottom:24px;">
                     Hey ${name},
                 </p>
 
-                <p style="
-                    color:#bdbdbd;
-                    font-size:18px;
-                    line-height:1.8;
-                ">
-                    Thank you for reaching out.
-                    I’ve successfully received your inquiry
+                <p style="color:#bdbdbd; font-size:18px; line-height:1.8;">
+                    Thank you for reaching out. I've successfully received your inquiry
                     and will personally review it.
                 </p>
 
-                <p style="
-                    color:#bdbdbd;
-                    font-size:18px;
-                    line-height:1.8;
-                ">
-                    You can typically expect a reply
-                    within <strong style="color:white;">
-                    24 hours
-                    </strong>.
+                <p style="color:#bdbdbd; font-size:18px; line-height:1.8;">
+                    You can typically expect a reply within
+                    <strong style="color:white;">24 hours</strong>.
                 </p>
 
                 <div style="
@@ -139,7 +103,6 @@ const sendInquiryEmail = async ({
                     background:#111;
                     border:1px solid rgba(255,255,255,.08);
                 ">
-
                     <div style="
                         color:#777;
                         margin-bottom:10px;
@@ -148,40 +111,22 @@ const sendInquiryEmail = async ({
                     ">
                         Your Message
                     </div>
-
-                    <div style="
-                        color:#fff;
-                        line-height:1.8;
-                    ">
+                    <div style="color:#fff; line-height:1.8;">
                         ${message}
                     </div>
-
                 </div>
 
-                <p style="
-                    color:#bdbdbd;
-                    font-size:18px;
-                    line-height:1.8;
-                ">
+                <p style="color:#bdbdbd; font-size:18px; line-height:1.8;">
                     Appreciate your trust.
                 </p>
 
-                <h3 style="
-                    margin-top:40px;
-                    font-size:28px;
-                ">
-                    — Ameen
-                </h3>
+                <h3 style="margin-top:40px; font-size:28px;">— Ameen</h3>
 
             </div>
-
         </div>
-
         </body>
         `
     });
 };
 
-module.exports = {
-    sendInquiryEmail
-};
+module.exports = { sendInquiryEmail };

@@ -12,12 +12,9 @@ const app = express();
 app.use(cors({
     origin: [
         'https://dev-ameen.netlify.app',
-        'https://dev-ameen.vercel.app',
-        'http://localhost:5500',
-        'http://127.0.0.1:5500'
+        'https://dev-ameen.vercel.app'
     ],
-    methods: ['GET', 'POST'],
-    credentials: true
+    methods: ['GET', 'POST']
 }));
 app.use(express.json({
     limit: '10kb'
@@ -29,7 +26,8 @@ const contactLimiter = rateLimit({
     max: 100,
     message: {
         success: false,
-        message: 'Too many inquiries. Please try again later.'
+        message:
+            'Too many inquiries. Please try again later.'
     }
 });
 
