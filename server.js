@@ -10,8 +10,11 @@ const { sendInquiryEmail } = require('./utils/emailService');
 const app = express();
 
 app.use(cors({
-    origin: 'https://dev-ameen.netlify.app',
-    methods: ['POST', 'GET']
+    origin: [
+        'https://dev-ameen.netlify.app',
+        'https://dev-ameen.vercel.app'
+    ],
+    methods: ['GET', 'POST']
 }));
 app.use(express.json({
     limit: '10kb'
