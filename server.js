@@ -26,8 +26,7 @@ const contactLimiter = rateLimit({
     max: 100,
     message: {
         success: false,
-        message:
-            'Too many inquiries. Please try again later.'
+        message: 'Too many inquiries. Please try again later.'
     }
 });
 
