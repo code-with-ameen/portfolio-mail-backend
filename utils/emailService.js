@@ -1,16 +1,22 @@
-const { Resend } = require('resend');
+const nodemailer = require('nodemailer');
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
 
 const sendInquiryEmail = async ({ name, email, message }) => {
 
     // ==================================================
     // 1. MAIL TO YOU
     // ==================================================
-    await resend.emails.send({
-        from: 'Portfolio Contact <onboarding@resend.dev>',
+    await transporter.sendMail({
+        from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
         to: process.env.RECEIVER_EMAIL,
-        reply_to: email,
+        replyTo: email,
         subject: `New Inquiry From ${name}`,
 
         html: `
@@ -39,8 +45,8 @@ const sendInquiryEmail = async ({ name, email, message }) => {
     // ==================================================
     // 2. REPLY MAIL TO USER
     // ==================================================
-    await resend.emails.send({
-        from: 'Ameen <onboarding@resend.dev>',
+    await transporter.sendMail({
+        from: `"Ameen" <${process.env.EMAIL_USER}>`,
         to: email,
         subject: 'Your inquiry has been received — Ameen',
 
