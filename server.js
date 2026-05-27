@@ -8,6 +8,7 @@ const helmet = require('helmet');
 const { sendInquiryEmail } = require('./utils/emailService');
 
 const app = express();
+app.set('trust proxy', 1);
 
 app.use(cors({
     origin: [
