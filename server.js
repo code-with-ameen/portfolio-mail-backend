@@ -21,7 +21,6 @@ app.use(express.json({
 }));
 app.use(helmet());
 app.disable('x-powered-by');
-app.use('/contact', contactLimiter);
 const contactLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 5,
@@ -31,7 +30,6 @@ const contactLimiter = rateLimit({
             'Too many inquiries. Please try again later.'
     }
 });
-
 
 app.get('/', (req, res) => {
     res.send('Mail server running 😭🔥');
