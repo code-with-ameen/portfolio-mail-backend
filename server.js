@@ -12,9 +12,12 @@ const app = express();
 app.use(cors({
     origin: [
         'https://dev-ameen.netlify.app',
-        'https://dev-ameen.vercel.app'
+        'https://dev-ameen.vercel.app',
+        'http://localhost:5500',
+        'http://127.0.0.1:5500'
     ],
-    methods: ['GET', 'POST']
+    methods: ['GET', 'POST'],
+    credentials: true
 }));
 app.use(express.json({
     limit: '10kb'
