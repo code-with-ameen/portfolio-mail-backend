@@ -23,11 +23,10 @@ app.use(helmet());
 app.disable('x-powered-by');
 const contactLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 5,
+    max: 100,  // 5 se 100
     message: {
         success: false,
-        message:
-            'Too many inquiries. Please try again later.'
+        message: 'Too many inquiries. Please try again later.'
     }
 });
 
@@ -68,7 +67,7 @@ app.post('/contact', async (req, res) => {
             message: 'Message too long'
         });
     }
-    
+
     try {
         const cleanName = name.trim();
         const cleanEmail = email.trim();
